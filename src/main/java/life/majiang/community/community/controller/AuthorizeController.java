@@ -2,13 +2,18 @@ package life.majiang.community.community.controller;
 
 import life.majiang.community.community.dto.AccessGitHubUser;
 import life.majiang.community.community.dto.AccessToken;
+import life.majiang.community.community.model.User;
 import life.majiang.community.community.provider.GitHubAccessToken;
 import life.majiang.community.community.provider.GitHubUser;
+import life.majiang.community.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.UUID;
 
 @Controller
 public class AuthorizeController {
@@ -25,8 +30,11 @@ public class AuthorizeController {
     @Value("${github.Redirect_uri}")
     private String Redirect_uri;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/callback")
-    public String callback(@RequestParam(name = "code") String code, @RequestParam(name = "state") String state) {
+    public String callback(@RequestParam(name = "code") String code, @RequestParam(name = "state") String state, HttpServletRequest request) {
 
         AccessToken accessToken = new AccessToken();
         accessToken.setClient_id(Client_id);
@@ -37,6 +45,17 @@ public class AuthorizeController {
         String body = gitHubAccessToken.getAccessToken(accessToken);
         AccessGitHubUser user = gitHubUser.getUser(body);
         System.out.println(user.getName());
-        return "index";
+        if(user !=null){
+            User dbUser = new User();
+            user.setId((long) 1);
+            dbUser.setToken(UUID.randomUUID().toString());
+            dbUser.setName(user.getName());
+            dbUser.setAccountId(String.valueOf(user.getId()));
+            userService.insertUser(dbUser);
+            request.getSession().setAttribute("user",user);
+            return "redirect:/";
+        }else {
+            return "redirect:/";
+        }
     }
 }

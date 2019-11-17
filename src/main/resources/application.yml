@@ -1,0 +1,30 @@
+
+server:
+  port: 8887
+
+github:
+  Client_id: f2edf418df074bb1dc01
+  Client_secret: 9591b2caa4a91415fe95b68cb23e1713a60de07e
+  Redirect_uri: http://localhost:8887/callback
+
+spring:
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://localhost:3306/forum?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    driver-class-name: com.mysql.jdbc.Driver
+
+#showSql
+logging:
+  level:
+    com:
+      example:
+        mapper : debug
+
+mybatis:
+  mapper-locations: classpath:mapping/*.xml
+  type-aliases-package: com.example.entity
+  configuration:
+    mapUnderscoreToCamelCase: true
+
+
