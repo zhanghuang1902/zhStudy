@@ -1,12 +1,14 @@
-package life.majiang.community.community;
+package life.majiang.community;
 
-import org.apache.ibatis.type.MappedTypes;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * @author 97083
+ */
 @SpringBootApplication
-@MapperScan("life.majiang.community.community.mapper")
+@MapperScan("life.majiang.community.mapper")
 public class CommunityApplication {
 
     public static void main(String[] args) {

@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="life.majiang.community.community.mapper.DbUserMapper" >
+<mapper namespace="life.majiang.community.mapper.DbUserMapper" >
 
-    <insert id="insertUser" >
+    <insert id="insertUser" parameterType="life.majiang.community.model.DbUser">
         insert into
-        user(id,account_id,token,name)
-        values (10,'2','3','4')
+        user(id,account_id,token,name,create_time,update_time)
+        values (#{id},#{accountId},#{token},#{name},current_time(3),current_time(3))
     </insert>
+    <select id="selectUser" resultType="life.majiang.community.model.DbUser">
+        select
+            id, account_id, token, name, create_time, update_time
+        FROM
+            user
+        WHERE
+            token=#{token}
+    </select>
+    <select id="selectCount" resultType="java.lang.Integer">
+        select
+            count(0)
+        from
+            user
+        where
+            account_id=#{id}
+    </select>
 
 </mapper>

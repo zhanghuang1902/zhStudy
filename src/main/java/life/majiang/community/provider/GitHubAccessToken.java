@@ -1,7 +1,7 @@
-package life.majiang.community.community.provider;
+package life.majiang.community.provider;
 
 import com.alibaba.fastjson.JSON;
-import life.majiang.community.community.dto.AccessToken;
+import life.majiang.community.dto.AccessToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;

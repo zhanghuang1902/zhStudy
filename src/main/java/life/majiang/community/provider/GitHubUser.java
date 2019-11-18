@@ -1,6 +1,6 @@
-package life.majiang.community.community.provider;
+package life.majiang.community.provider;
 
-import life.majiang.community.community.dto.AccessGitHubUser;
+import life.majiang.community.dto.AccessGitHubUser;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;

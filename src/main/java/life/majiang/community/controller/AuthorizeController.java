@@ -1,18 +1,20 @@
-package life.majiang.community.community.controller;
+package life.majiang.community.controller;
 
-import life.majiang.community.community.dto.AccessGitHubUser;
-import life.majiang.community.community.dto.AccessToken;
-import life.majiang.community.community.model.User;
-import life.majiang.community.community.provider.GitHubAccessToken;
-import life.majiang.community.community.provider.GitHubUser;
-import life.majiang.community.community.service.UserService;
+import life.majiang.community.dto.AccessGitHubUser;
+import life.majiang.community.dto.AccessToken;
+import life.majiang.community.model.DbUser;
+import life.majiang.community.provider.GitHubAccessToken;
+import life.majiang.community.provider.GitHubUser;
+import life.majiang.community.service.UserService;
+import life.majiang.community.utils.IdWorker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 @Controller
@@ -34,7 +36,7 @@ public class AuthorizeController {
     private UserService userService;
 
     @GetMapping("/callback")
-    public String callback(@RequestParam(name = "code") String code, @RequestParam(name = "state") String state, HttpServletRequest request) {
+    public String callback(@RequestParam(name = "code") String code, @RequestParam(name = "state") String state, HttpServletResponse response) {
 
         AccessToken accessToken = new AccessToken();
         accessToken.setClient_id(Client_id);
@@ -46,13 +48,17 @@ public class AuthorizeController {
         AccessGitHubUser user = gitHubUser.getUser(body);
         System.out.println(user.getName());
         if(user !=null){
-            User dbUser = new User();
-            user.setId((long) 1);
-            dbUser.setToken(UUID.randomUUID().toString());
-            dbUser.setName(user.getName());
-            dbUser.setAccountId(String.valueOf(user.getId()));
-            userService.insertUser(dbUser);
-            request.getSession().setAttribute("user",user);
+            int count =userService.selectCount(String.valueOf(user.getId()));
+            if(count==0){
+                DbUser dbUser = new DbUser();
+                dbUser.setId(IdWorker.getId());
+                String token = UUID.randomUUID().toString();
+                dbUser.setToken(token);
+                dbUser.setName(user.getName());
+                dbUser.setAccountId(String.valueOf(user.getId()));
+                userService.insertUser(dbUser);
+                response.addCookie(new Cookie("token",token));
+            }
             return "redirect:/";
         }else {
             return "redirect:/";

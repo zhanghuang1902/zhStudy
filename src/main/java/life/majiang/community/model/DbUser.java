@@ -1,20 +1,20 @@
-package life.majiang.community.community.model;
+package life.majiang.community.model;
 
-public class User {
+public class DbUser {
 
-    private Integer id;
+    private String id;
 
     private String name;
 
-    private  String accountId;
+    private String accountId;
 
     private String token;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

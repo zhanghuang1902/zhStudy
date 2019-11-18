@@ -1,10 +1,13 @@
-package life.majiang.community.community.dto;
+package life.majiang.community.dto;
 
+/**
+ * @author 97083
+ */
 public class AccessGitHubUser {
 
     private String name;
 
-    private Long id;
+    private String id;
 
     private String bio;
 
@@ -16,11 +19,11 @@ public class AccessGitHubUser {
         this.name = name;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
